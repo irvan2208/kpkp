@@ -285,5 +285,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script type="text/javascript">
   $(document).ajaxStart(function() { Pace.restart(); });
 </script>
+<script type="text/javascript">
+      $("[type='number']").keypress(function (evt) {
+          evt.preventDefault();
+      });
+</script>
 </body>
 </html>

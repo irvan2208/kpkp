@@ -19,7 +19,7 @@ class TransactionController extends Controller
     {
         $loguser = Auth::user();
 
-        DB::enableQueryLog();
+        //DB::enableQueryLog();
 
         $getduser = DB::table('sys')
             ->select(['prodi.*','transaction.*','sys.*','users.*','prodi.nama as np','jenis_kendaraan.nama as njenis','sys.no_polis as nopol',DB::raw("datediff(MAX(transaction.expired_at), NOW())as days")])
@@ -51,21 +51,31 @@ class TransactionController extends Controller
     public function tambah(Request $request)
     {
         //dd($request);
-        $this->validate($request,[
-            'nopolis' => 'required',
-            'bulan' => 'required|max:12'
-        ]);
-
+        // $this->validate($request,[
+        //     'nopolis' => 'required',
+        //     'bulan' => 'required|max:12|min:0|numeric'
+        // ]);
         
 
+        $date = date("Y-m-d");
+        $bulan = $request->bulan+1;
+        $date = strtotime(date("Y-m-1", strtotime($date)) . " +$bulan month");
+        $date = date("Y-m-d",$date);
+        //echo 'expired: '.$date;
+
+        DB::enableQueryLog();
         $transaction = new transaction;
-        $transaction->no_polis = $request->nopolis;
+        $transaction->no_polis = $request->nopol;
         $transaction->bulan = $request->bulan;
-        // $transaction->jk = $request->jk;
+        $transaction->expired_at = $date;
         // $transaction->prodi = $request->prodi;
         // $transaction->email = $request->email;
         // $transaction->phone = $request->phone;
-        // $transaction->save();
+        $transaction->save();
+        $queries = DB::getQueryLog();
+        //dd($queries);
+
+        //dd('asdf');
 
         return redirect('pembayaran/baru');
     }

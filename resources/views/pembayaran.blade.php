@@ -12,7 +12,7 @@
       <div class="box box-primary">
             <!-- /.box-header -->
             <!-- form start -->
-            {{ Form::open(array('url' => 'pembayaran/baru','id'=>'newp')) }}
+            {{ Form::open(array('url' => 'pembayaran/baru')) }}
             <div class="box-body">
             <table class="table">
 	            <tbody>
@@ -71,7 +71,7 @@
             		<tr>
             			<th>Pilih Jumlah Bulan</th>
             			<td class="{{ $errors->has('bulan') ? 'has-error' :'' }}">
-                              {{ Form::number('bulan', 'value', array('class' => 'form-control', 'max' => 12)) }}
+                              {{ Form::number('bulan', 1, array('class' => 'form-control','min'=>1, 'max' => 12)) }}
 
                               @if($errors->has('bulan'))
                                     <span class="help-block">{{$errors->first('bulan')}}</span>
