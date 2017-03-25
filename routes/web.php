@@ -31,6 +31,7 @@ Route::put('admin/users/{npm}','UserController@update')->middleware('auth');
 Route::post('admin/users','UserController@store')->middleware('auth');
 
 Route::get('pembayaran/baru','TransactionController@show')->middleware('auth');
+Route::post('pembayaran/baru','TransactionController@tambah')->middleware('auth');
 
 Route::get('pembayaran/konfirmasi', function () {
     return view('conpembayaran');

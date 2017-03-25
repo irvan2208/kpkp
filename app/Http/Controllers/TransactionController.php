@@ -22,7 +22,7 @@ class TransactionController extends Controller
         DB::enableQueryLog();
 
         $getduser = DB::table('sys')
-            ->select(['prodi.*','transaction.*','sys.*','users.*','prodi.nama as np','jenis_kendaraan.nama as njenis','sys.no_polis as nopol',DB::raw("datediff(transaction.expired_at, NOW())as days")])
+            ->select(['prodi.*','transaction.*','sys.*','users.*','prodi.nama as np','jenis_kendaraan.nama as njenis','sys.no_polis as nopol',DB::raw("datediff(MAX(transaction.expired_at), NOW())as days")])
             ->leftJoin('users','users.npm','=','sys.npm')
             ->leftJoin('jenis_kendaraan','jenis_kendaraan.id','=','sys.jenis')
             ->leftJoin('prodi','prodi.id','=','users.prodi')
@@ -30,41 +30,43 @@ class TransactionController extends Controller
             ->leftJoin('admincfm','admincfm.transid','=','transaction.id')
             ->where('users.npm', $loguser->npm)
             ->where('transaction.paid', 1)
-            ->where('admincfm.cfm', 1);
+            ->where('admincfm.cfm', 1)
+            ->orderBy('transaction.expired_at','desc')
+            ->groupBy('nopol');
             //->get();
         //$queries = DB::getQueryLog();
-
-        //dd($getduser);
-
         $getkendaraan = $getduser->get();
         //dd($getkendaraan);
-        // foreach ($getkendaraan as $looptgl) {
-        //     if ($looptgl->days < 1) {
-        //          echo "lewat";
-        //      }
-        // }
-        //dd($getkendaraan);
-        //$kend = array_shift($getkendaraan->toArray(),$datediff);
-        //dd($kend)->nama;
-        //array_push($datediff, $getkendaraan);
-        // $test = $getkendaraan->push($datediff);
-        // dd($test);
-        // if ($diff->invert == true) {
-        //     echo "lewat";
-        // }
-        //dd($datediff)->days;
-
-        //$kend = array_combine($datediff, $getkendaraan);
         if ($getkendaraan->count() <= 1){
             $getkendaraan = $getkendaraan->first();
         }
-        //dd($kend);
-
 
         return view('pembayaran',[
             'loguser'=>$loguser,
             'getduser'=>$getduser->first(),
             'getkendaraan'=>$getkendaraan,
         ]);
+    }
+
+    public function tambah(Request $request)
+    {
+        //dd($request);
+        $this->validate($request,[
+            'nopolis' => 'required',
+            'bulan' => 'required|max:12'
+        ]);
+
+        
+
+        $transaction = new transaction;
+        $transaction->no_polis = $request->nopolis;
+        $transaction->bulan = $request->bulan;
+        // $transaction->jk = $request->jk;
+        // $transaction->prodi = $request->prodi;
+        // $transaction->email = $request->email;
+        // $transaction->phone = $request->phone;
+        // $transaction->save();
+
+        return redirect('pembayaran/baru');
     }
 }

@@ -13,7 +13,7 @@ class UserController extends Controller
     public function showprodi()
     {
         $prodi = DB::table('prodi')->pluck('nama', 'id');
-        dd($prodi);
+        //dd($prodi);
     	return view('4dm/users',['prodi'=>$prodi]);
     }
 

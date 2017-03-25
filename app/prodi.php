@@ -15,8 +15,4 @@ class prodi extends Model
 
     //protected $fillable = ['title','description']; //whitelist
     // protected $guarded = ['title','description']; //blacklist
-    public function users()
-	{
-		return $this->belongsTo('App\users','prodi');
-	}
 }

@@ -12,7 +12,7 @@
       <div class="box box-primary">
             <!-- /.box-header -->
             <!-- form start -->
-            {{ Form::open(array('url' => 'admin/users','id'=>'newU')) }}
+            {{ Form::open(array('url' => 'pembayaran/baru','id'=>'newp')) }}
             <div class="box-body">
             <table class="table">
 	            <tbody>
@@ -39,8 +39,15 @@
             		<tr>
             			<th>No Polis</th>
             			<td>
-                              @if (count($getkendaraan) <= 1)
-                              {{ $getkendaraan->nopol }} ({{ $getkendaraan->njenis }}) <span class="text-red">{{$getkendaraan->days}} Hari Lagi</span> 
+                              @if (count($getkendaraan) == 1)
+                                    {{ $getkendaraan->nopol }} ({{ $getkendaraan->njenis }}) 
+                                    <span class="text-red">
+                                    @if($getkendaraan->days > 0)
+                                     {{$getkendaraan->days}} Hari Lagi
+                                     @else
+                                          Sudah Habis
+                                     @endif
+                                     </span> 
                               @else
                                     <select name="nopol" class="form-control">
 
@@ -48,11 +55,7 @@
                                           @if($kend->days < 1)
                                                 class="text-red"
                                           @endif
-                                                <option 
-                                                      @if($kend->days < 5)
-                                                            class="text-red"
-                                                      @endif
-                                                 value="{{$kend->nopol}}">{{$kend->nopol}} ({{$kend->njenis}}) <span class="text-red">
+                                                <option class="{{ $kend->days <5 ? 'text-red' :'' }}" value="{{$kend->nopol}}">{{$kend->nopol}} ({{$kend->njenis}}) <span class="text-red">
                                                  @if($kend->days > 0)
                                                  {{$kend->days}} Hari Lagi
                                                  @else
@@ -67,12 +70,17 @@
             		</tr>
             		<tr>
             			<th>Pilih Jumlah Bulan</th>
-            			<td>
-                              {{ Form::number('name', 'value', array('class' => 'form-control')) }}
+            			<td class="{{ $errors->has('bulan') ? 'has-error' :'' }}">
+                              {{ Form::number('bulan', 'value', array('class' => 'form-control', 'max' => 12)) }}
+
+                              @if($errors->has('bulan'))
+                                    <span class="help-block">{{$errors->first('bulan')}}</span>
+                              @endif
             			</td>
             		</tr>
             		<tr>
-            		<th colspan="2">{{Form::submit('Simpan',array('class'=>'btn btn-block btn-primary btn-clr'))}}</th>
+            		<th colspan="2">
+                        {{Form::submit('Simpan',array('class'=>'btn btn-block btn-primary btn-clr'))}}</th>
             		</tr>
 	            </tbody>
             </table>

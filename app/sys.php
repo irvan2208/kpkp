@@ -17,13 +17,4 @@ class sys extends Model
     //protected $fillable = ['title','description']; //whitelist
     // protected $guarded = ['title','description']; //blacklist
 
-    public function user()
-	{
-		return $this->belongsTo('App\users','npm');
-	}
-
-	public function jenisk()
-	{
-		return $this->belongsTo('App\jenisk','jenis')->select(array('id', 'nama'));
-	}
 }

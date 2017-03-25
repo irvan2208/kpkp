@@ -12,17 +12,6 @@ class users extends Model
 	protected $primaryKey = 'npm';
 	//protected $dates = ['deleted_at'];
 	protected $table = 'users';
-
-	public function kendaraan()
-	{
-		return $this->hasMany('App\sys','npm');
-	}
-
-	public function prodi()
-	{
-		return $this->hasOne('App\prodi','id');
-	}
-
     //public $timestamps = false; // kolom created_at updated_add tidak ada
 
     //protected $fillable = ['title','description']; //whitelist
