@@ -56,27 +56,85 @@ class TransactionController extends Controller
         //     'bulan' => 'required|max:12|min:0|numeric'
         // ]);
         
-
         $date = date("Y-m-d");
         $bulan = $request->bulan+1;
         $date = strtotime(date("Y-m-1", strtotime($date)) . " +$bulan month");
         $date = date("Y-m-d",$date);
         //echo 'expired: '.$date;
 
-        DB::enableQueryLog();
+        //DB::enableQueryLog();
         $transaction = new transaction;
         $transaction->no_polis = $request->nopol;
         $transaction->bulan = $request->bulan;
         $transaction->expired_at = $date;
-        // $transaction->prodi = $request->prodi;
-        // $transaction->email = $request->email;
-        // $transaction->phone = $request->phone;
+        //$transaction->timestamps();
         $transaction->save();
-        $queries = DB::getQueryLog();
+        //$queries = DB::getQueryLog();
         //dd($queries);
 
         //dd('asdf');
 
-        return redirect('pembayaran/baru');
+        return redirect('pembayaran/konfirmasi')
+        ->with('success','Perpanjangan diterima, harap lakukan pembayaran lalu konfirmasi.');
+    }
+
+    public function showlist()
+    {
+        $loguser = Auth::user();
+        $getall = DB::table('transaction')
+        ->select(['admincfm.*','transaction.*','sys.*','jenis_kendaraan.nama as njenis',DB::raw('transaction.bulan*jenis_kendaraan.harga AS total')])
+        ->leftJoin('sys','transaction.no_polis','=','sys.no_polis')
+        ->leftJoin('jenis_kendaraan','sys.jenis','=','jenis_kendaraan.id')
+        ->leftJoin('admincfm','transaction.id','=','admincfm.transid')
+        ->where('sys.npm',$loguser->npm)
+        //->where('transaction.paid',0)
+        ->orderBy('transaction.expired_at','DESC')
+        ->get();
+
+        //dd($getall);
+        return view('listpembayaran',['getall'=>$getall,]);
+    }
+
+    public function createconf($id)
+    {
+        $gettrans = DB::table('transaction')
+        ->select(['transaction.id as noper','transaction.*','sys.*','users.*','jenis_kendaraan.nama as njenis','transaction.bank as bankid',DB::raw('transaction.bulan*jenis_kendaraan.harga AS total')])
+        ->leftJoin('sys','transaction.no_polis','=','sys.no_polis')
+        ->leftJoin('users','sys.npm','=','users.npm')
+        ->leftJoin('jenis_kendaraan','sys.jenis','=','jenis_kendaraan.id')
+        ->where('transaction.id',$id)
+        ->first();
+
+        if ($gettrans->paid == 0) {
+            $getbank = DB::table('bank')->get();
+        }else{
+           $getbank = DB::table('bank')->where('bank.id',$gettrans->bank)->first();
+        }
+        //dd($getbank);
+        //dd($getbank);
+        return view('conpembayaran',['gettrans'=>$gettrans,'getbank'=>$getbank]);
+    }
+
+    public function storeconf(request $request, $id)
+    {
+        $this->validate($request, [
+            'namatrans' => 'required',
+            'bank' => 'required|numeric',
+            'bukti' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $imageName = time().'.'.$request->bukti->getClientOriginalExtension();
+        $request->bukti->move(public_path('images'), $imageName);
+
+        $transaction = transaction::find($id);
+        $transaction->paid = 1;
+        $transaction->bank = $request->bank;
+        $transaction->atas_nama = $request->namatrans;
+        $transaction->image = "images/".$imageName;
+        $transaction->save();
+
+        return back()
+            ->with('success','Konfirasi diterima, dan akan di cek oleh admin.');
+            //->with('path',$imageName);
     }
 }

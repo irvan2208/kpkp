@@ -41,6 +41,7 @@
             			<td>
                               @if (count($getkendaraan) == 1)
                                     {{ $getkendaraan->nopol }} ({{ $getkendaraan->njenis }}) 
+                                    <input type="hidden" name="nopol" value="{{ $getkendaraan->nopol }}">
                                     <span class="text-red">
                                     @if($getkendaraan->days > 0)
                                      {{$getkendaraan->days}} Hari Lagi

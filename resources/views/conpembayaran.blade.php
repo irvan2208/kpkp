@@ -12,56 +12,95 @@
       <div class="box box-primary">
             <!-- /.box-header -->
             <!-- form start -->
-            {{ Form::open(array('url' => 'admin/users','id'=>'newU')) }}
+            {{ Form::open(array('url' => 'pembayaran/'.$gettrans->noper.'/konfirmasi','enctype'=>'multipart/form-data')) }}
             <div class="box-body">
             <table class="table">
 	            <tbody>
             		<tr>
             			<th>No Perpanjangan</th>
-            			<td>17031601</td>
+            			<td>{{ $gettrans->noper }}</td>
             		</tr>
             		<tr>
             			<th>Nama Mahasiswa</th>
-            			<td>Irvan Santoso</td>
+            			<td>{{ $gettrans->nama }}</td>
             		</tr>
             		<tr>
             			<th>No Hp</th>
-            			<td>083184476796</td>
+            			<td>{{ $gettrans->phone }}</td>
             		</tr>
             		<tr>
             			<th>No Polis</th>
-            			<td>BP 1078 FD</td>
+            			<td>{{ $gettrans->no_polis }}</td>
             		</tr>
             		<tr>
             			<th>Jenis Kendaraan</th>
-            			<td>Mobil</td>
+            			<td>{{ $gettrans->njenis }}</td>
             		</tr>
             		<tr>
             			<th>Jumlah Bulan</th>
-            			<td>2 Bulan</td>
+            			<td>{{ $gettrans->bulan }}</td>
             		</tr>
                         <tr>
                               <th>Total Pembayaran</th>
-                              <td>Rp. 120.000</td>
+                              <td>Rp. {{ number_format($gettrans->total) }}</td>
                         </tr>
                         <tr>
                               <th>Bank Tujuan</th>
-                              <td>{{ Form::select('jk', ['1'=>'Bank BCA (12345678)','f'=>'Wanita'], null, array('class' => 'form-control')) }}</td>
+                              <td>
+                              @if($gettrans->paid == 1)
+                                    {{$getbank->nama}} ({{$getbank->norek}})
+                              @else
+                              <select name="bank" class="form-control">
+                                    @foreach($getbank as $bank)
+                                    <option value="{{ $bank->id }}">{{ $bank->nama }} ({{ $bank->norek }})</option>
+                                    @endforeach
+                              </select>
+                              @endif
+                              </td>
                         </tr>
                         <tr>
-                              <th>Transfer A.N</th>
-                              <td>{{ Form::text('nama', 'Irvan Santoso', array('class' => 'form-control')) }}</td>
+                              <th>Transfer/Setor A.N</th>
+                              <td>
+                              @if($gettrans->paid == 1)
+                                    {{$gettrans->atas_nama}}
+                              @else
+                              {{ Form::text('namatrans', 'Irvan Santoso', array('class' => 'form-control')) }}
+                              @endif
+                              </td>
                         </tr>
                         <tr>
-                              <th>Bank Tujuan</th>
-                              <td>{{ Form::select('jk', ['1'=>'Bank BCA (12345678)','f'=>'Wanita'], null, array('class' => 'form-control')) }}</td>
-                        </tr>
-                        <tr>
+                              @if (count($errors) > 0)
+                                    <div class="alert alert-danger">
+                                          <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                                          <ul>
+                                                @foreach ($errors->all() as $error)
+                                                      <li>{{ $error }}</li>
+                                                @endforeach
+                                          </ul>
+                                    </div>
+                              @endif
+
+                              @if ($message = Session::get('success'))
+                              <div class="alert alert-success alert-block">
+                                    <button type="button" class="close" data-dismiss="alert">×</button>
+                                      <strong>{{ $message }}</strong>
+                              </div>
+                              @endif
+
                               <th>Bukti Pembayaran</th>
-                              <td>{{ Form::file('jk', '', null, array('class' => 'form-control')) }}</td>
+                              <td>
+                              @if($gettrans->paid == 1)
+                              <a data-toggle="modal"  data-target="#imgmodal" href="#"><img width="200" height="100" src="{{ url('/') }}/{{ $gettrans->image }}"></a>
+                              @else
+                              {{ Form::file('bukti', '', null, array('class' => 'form-control')) }}
+                              @endif
+                              </td>
                         </tr>
             		<tr>
-            		<th colspan="2">{{Form::submit('Kirim',array('class'=>'btn btn-block btn-primary btn-clr'))}}</th>
+                        @if($gettrans->paid == 0)
+            		<th colspan="2">
+                        {{Form::submit('Kirim',array('class'=>'btn btn-block btn-primary btn-clr'))}}</th>
+                        @endif
             		</tr>
 	            </tbody>
             </table>
@@ -70,4 +109,24 @@
             {{ Form::close() }}
           </div>
 </section>
+
+<div id="imgmodal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Bukti Pembayaran {{ $gettrans->noper }}</h4>
+      </div>
+      <div class="modal-body">
+        <img width="100%" height="450" src="{{ url('/') }}/{{ $gettrans->image }}">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
 @endsection
