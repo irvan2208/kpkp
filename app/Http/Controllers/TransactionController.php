@@ -29,22 +29,26 @@ class TransactionController extends Controller
             ->leftJoin('transaction','transaction.no_polis','=','sys.no_polis')
             ->leftJoin('admincfm','admincfm.transid','=','transaction.id')
             ->where('users.npm', $loguser->npm)
-            ->where('transaction.paid', 1)
+            ->orWhere('transaction.paid', 1)
             ->where('admincfm.cfm', 1)
             ->orderBy('transaction.expired_at','desc')
             ->groupBy('nopol');
             //->get();
         //$queries = DB::getQueryLog();
         $getkendaraan = $getduser->get();
-        //dd($getkendaraan);
-        if ($getkendaraan->count() <= 1){
+        //dd($getkendaraan->count());
+        if ($getkendaraan->count() == 1){
             $getkendaraan = $getkendaraan->first();
         }
+        // elseif ($getkendaraan->count() == 0) {
+        //     $kosong = 1;
+        // }
 
         return view('pembayaran',[
             'loguser'=>$loguser,
             'getduser'=>$getduser->first(),
             'getkendaraan'=>$getkendaraan,
+            //'kosong'=>$kosong,
         ]);
     }
 
@@ -55,7 +59,7 @@ class TransactionController extends Controller
         //     'nopolis' => 'required',
         //     'bulan' => 'required|max:12|min:0|numeric'
         // ]);
-        
+
         $date = date("Y-m-d");
         $bulan = $request->bulan+1;
         $date = strtotime(date("Y-m-1", strtotime($date)) . " +$bulan month");
@@ -134,7 +138,7 @@ class TransactionController extends Controller
         $transaction->save();
 
         return back()
-            ->with('success','Konfirasi diterima, dan akan di cek oleh admin.');
+            ->with('success','Konfirmasi diterima, dan akan di cek oleh admin.');
             //->with('path',$imageName);
     }
 }
