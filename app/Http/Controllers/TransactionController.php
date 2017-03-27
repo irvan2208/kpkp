@@ -22,18 +22,22 @@ class TransactionController extends Controller
         //DB::enableQueryLog();
 
         $getduser = DB::table('sys')
-            ->select(['prodi.*','transaction.*','sys.*','users.*','prodi.nama as np','jenis_kendaraan.nama as njenis','sys.no_polis as nopol',DB::raw("datediff(MAX(transaction.expired_at), NOW())as days")])
+            ->select(['prodi.*','transaction.*','admincfm.cfm as cfm','sys.*','users.*','prodi.nama as np','jenis_kendaraan.nama as njenis','sys.no_polis as nopol',DB::raw("datediff(MAX(transaction.expired_at), NOW())as days")])
             ->leftJoin('users','users.npm','=','sys.npm')
             ->leftJoin('jenis_kendaraan','jenis_kendaraan.id','=','sys.jenis')
             ->leftJoin('prodi','prodi.id','=','users.prodi')
             ->leftJoin('transaction','transaction.no_polis','=','sys.no_polis')
             ->leftJoin('admincfm','admincfm.transid','=','transaction.id')
             ->where('users.npm', $loguser->npm)
-            ->orWhere('transaction.paid', 1)
-            ->where('admincfm.cfm', 1)
+            ->orWhere(function ($getduser)
+            {
+                $getduser->Where('transaction.paid', 1)
+                    ->where('admincfm.cfm', 1);
+            })
             ->orderBy('transaction.expired_at','desc')
             ->groupBy('nopol');
             //->get();
+            //dd($getduser->get());
         //$queries = DB::getQueryLog();
         $getkendaraan = $getduser->get();
         //dd($getkendaraan->count());
@@ -140,5 +144,21 @@ class TransactionController extends Controller
         return back()
             ->with('success','Konfirmasi diterima, dan akan di cek oleh admin.');
             //->with('path',$imageName);
+    }
+
+    public function perpanjanganlist()
+    {
+        $getall = DB::table('transaction')
+        ->select(['admincfm.*','transaction.*','sys.*','users.*','jenis_kendaraan.nama as njenis',DB::raw('transaction.bulan*jenis_kendaraan.harga AS total','transaction.updated_at as konf')])
+        ->leftJoin('sys','transaction.no_polis','=','sys.no_polis')
+        ->leftJoin('users','sys.npm','=','users.npm')
+        ->leftJoin('jenis_kendaraan','sys.jenis','=','jenis_kendaraan.id')
+        ->leftJoin('admincfm','transaction.id','=','admincfm.transid')
+        ->where('transaction.paid',1)
+        ->orderBy('transaction.expired_at','DESC')
+        ->get();
+
+        //dd($getall);
+        return view('4dm/perpanjangan',['getall'=>$getall,]);
     }
 }

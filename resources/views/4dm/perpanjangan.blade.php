@@ -16,47 +16,58 @@
                 <thead>
                 <tr>
                   <th>No</th>
-                  <th>Nama</th>
-                  <th>No. Hp</th>
                   <th>No. Polis</th>
-                  <th>Tgl konfirmasi</th>
+                  <th>TF A.Nama</th>
+                  <th>Jatuh tempo</th>
                   <th>Jml Bln</th>
                   <th>Total</th>
-                  <th>Img</th>
+                  <th>Bukti pembayaran</th>
+                  <th>Opsi</th>
                 </tr>
                 </thead>
                 <tbody>
+                @foreach($getall as $data)
                 	<tr>
-                	<td>17031601</td>
-                	<td>Irvan Santoso</td>
-                	<td>083184476796</td>
-                	<td>BP 1078 FD</td>
-                	<td>Kamis, 16-Maret-2017 11:23 PM</td>
-                	<th>2 Bulan</th>
-                	<td>Rp. 120.000</td>
-                	<td><img src="" alt="Gambar konfirmasi"></td>
-                	</tr>
-                	<tr>
-                	<td>17031602</td>
-                	<td>Alexander</td>
-                	<td>083184476796</td>
-                	<td>BP 1234 AA</td>
-                	<td>Kamis, 16-Maret-2017 10:23 AM</td>
-                	<th>1 Bulan</th>
-                	<td>Rp. 60.000</td>
-                	<td><img src="" alt="Gambar konfirmasi"></td>
-                	</tr>
+                    <td>{{$data->id}}</td>
+                  	<td>{{$data->no_polis}}</td>
+                    <td>{{$data->atas_nama}}</td>
+                  	<td>{{$data->expired_at}}</td>
+                  	<th>{{$data->bulan}} Bulan</th>
+                  	<td>Rp. {{number_format($data->total)}}</td>
+                  	<td><a data-toggle="modal"  data-target="#imgmodal" href="#"><img width="200" height="100" src="{{ url('/') }}/{{ $data->image }}"></a></td>
+                    <td>{{ link_to('admin/perpanjangan/'.$data->id.'/konfirmasi', 'Konfirmasi', array('class' => 'btn btn-sm btn-success')) }}</td>
+                  </tr>
+                  <div id="imgmodal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+
+                      <!-- Modal content-->
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          <h4 class="modal-title">Bukti Pembayaran {{ $data->id }}</h4>
+                        </div>
+                        <div class="modal-body">
+                          <img width="100%" height="450" src="{{ url('/') }}/{{ $data->image }}">
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                  @endforeach
                 </tbody>
                 <tfoot>
                 <tr>
                   <th>No</th>
-                  <th>Nama</th>
-                  <th>No. Hp</th>
                   <th>No. Polis</th>
-                  <th>Tgl konfirmasi</th>
+                  <th>Nama</th>
+                  <th>Jatuh tempo</th>
                   <th>Jml Bln</th>
                   <th>Total</th>
-                  <th>Img</th>
+                  <th>Bukti pembayaran</th>
+                  <th>Opsi</th>
                 </tr>
                 </tfoot>
               </table>
@@ -64,4 +75,5 @@
 
           </div>
 </section>
+
 @endsection

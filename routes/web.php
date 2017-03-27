@@ -38,9 +38,7 @@ Route::get('pembayaran/konfirmasi','TransactionController@showlist')->middleware
 Route::get('pembayaran/{id}/konfirmasi','TransactionController@createconf')->middleware('auth');
 Route::post('pembayaran/{id}/konfirmasi','TransactionController@storeconf')->middleware('auth');
 
-Route::get('admin/perpanjangan', function () {
-    return view('4dm/perpanjangan');
-})->middleware('auth');
+Route::get('admin/perpanjangan', 'TransactionController@perpanjanganlist')->middleware('auth');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
