@@ -29,7 +29,7 @@ Route::get('admin/users','UserController@showuser')->middleware('auth','admin','
 Route::get('admin/users/{npm}/edit','UserController@edit')->middleware('auth','admin');
 Route::put('admin/users/{npm}','UserController@update')->middleware('auth','admin');
 Route::post('admin/users','UserController@store')->middleware('auth','admin');
-Route::put('pembayaran/{id}/konfirmasi','TransactionController@confpaid')->middleware('auth','admin');
+Route::put('admin/perpanjangan/{id}/konfirmasi','TransactionController@confpaid')->middleware('auth','admin');
 
 
 

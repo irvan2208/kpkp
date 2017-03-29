@@ -8,6 +8,7 @@ use App\transaction;
 use App\prodi;
 use App\sys;
 use App\users;
+use App\admincfm;
 use App\jenisk;
 use Auth;
 use DateTime;
@@ -162,8 +163,15 @@ class TransactionController extends Controller
         return view('4dm/perpanjangan',['getall'=>$getall,]);
     }
 
-    public function confpaid($id)
+    public function confpaid(request $request, $id)
     {
-        dd($id);
+        //dd($request);
+        $admincfm = new admincfm;
+        $admincfm->transid = $id;
+        $admincfm->cfm = $request->cfm;
+        $admincfm->save();
+
+        return back()
+            ->with('success','Konfirmasi diterima, Selesai.');
     }
 }

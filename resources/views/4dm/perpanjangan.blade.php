@@ -12,6 +12,12 @@
       <div class="box box-primary">
 
             <div class="box-body">
+            @if ($message = Session::get('success'))
+            <div class="alert alert-success alert-block">
+                  <button type="button" class="close" data-dismiss="alert">×</button>
+                    <strong>{{ $message }}</strong>
+            </div>
+            @endif
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
@@ -35,7 +41,14 @@
                   	<th>{{$data->bulan}} Bulan</th>
                   	<td>Rp. {{number_format($data->total)}}</td>
                   	<td><a data-toggle="modal"  data-target="#imgmodal" href="#"><img width="200" height="100" src="{{ url('/') }}/{{ $data->image }}"></a></td>
-                    <td>{{ link_to('admin/perpanjangan/'.$data->id.'/konfirmasi', 'Konfirmasi', array('class' => 'btn btn-sm btn-success')) }}</td>
+                    <td>
+                      {{ Form::open(array('url' => 'admin/perpanjangan/'.$data->id.'/konfirmasi')) }}
+                      {{ Form::hidden('cfm', 1) }}
+                      {{Form::submit('Konfirmasi',array('class'=>'btn btn-sm btn-success'))}}
+                      {{ csrf_field() }}
+                      {{ Form::hidden('_method', 'PUT') }}
+                      {{ Form::close() }}
+                    </td>
                   </tr>
                   <div id="imgmodal" class="modal fade" role="dialog">
                     <div class="modal-dialog">
