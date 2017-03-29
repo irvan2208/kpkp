@@ -2,7 +2,10 @@
 
 namespace App\Http\Middleware;
 
+
 use Closure;
+use App\User;
+use Illuminate\Support\Facades\Auth;
 
 class Admin
 {
@@ -15,6 +18,12 @@ class Admin
      */
     public function handle($request, Closure $next)
     {
-        return $next($request);
+        //dd('asd');
+        if ( Auth::check() && Auth::user()->isAdmin() )
+        {
+            return $next($request);
+        }
+
+        return redirect('login');
     }
 }

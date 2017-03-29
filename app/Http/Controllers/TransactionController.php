@@ -40,7 +40,7 @@ class TransactionController extends Controller
             //dd($getduser->get());
         //$queries = DB::getQueryLog();
         $getkendaraan = $getduser->get();
-        //dd($getkendaraan->count());
+        //dd($loguser->npm);
         if ($getkendaraan->count() == 1){
             $getkendaraan = $getkendaraan->first();
         }
@@ -155,10 +155,15 @@ class TransactionController extends Controller
         ->leftJoin('jenis_kendaraan','sys.jenis','=','jenis_kendaraan.id')
         ->leftJoin('admincfm','transaction.id','=','admincfm.transid')
         ->where('transaction.paid',1)
+        ->where('admincfm.cfm',null)
         ->orderBy('transaction.expired_at','DESC')
         ->get();
 
-        //dd($getall);
         return view('4dm/perpanjangan',['getall'=>$getall,]);
+    }
+
+    public function confpaid($id)
+    {
+        dd($id);
     }
 }

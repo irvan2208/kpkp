@@ -7,6 +7,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
+    public function isAdmin()
+    {
+        return $this->isAdmin; // this looks for an admin column in your users table
+    }
+
     protected $primaryKey = 'npm';
     use Notifiable;
 

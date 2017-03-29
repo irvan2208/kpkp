@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use DB;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +14,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $perpanjangbaru = DB::table('transaction')
+        ->leftJoin('admincfm','transaction.id','=','admincfm.transid')
+        ->where('transaction.paid',1)
+        ->where('admincfm.cfm',null)
+        ->get();
+        view()->share('perpanjangbaru', $perpanjangbaru->count());
     }
 
     /**

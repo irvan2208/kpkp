@@ -1,7 +1,7 @@
 @extends('layouts.master-admin')
 @section('title','Perpanjangan')
 @section('page-header','Daftar Perpanjangan')
-@section('page-description','Silahkan isi form berikut')
+@section('page-description','Menunggu konfirmasi')
 @section('breadcrumblv2')
 <li class="active">Daftar Perpanjangan</li>
 @endsection

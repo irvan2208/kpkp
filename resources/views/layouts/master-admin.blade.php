@@ -118,7 +118,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <!-- The user image in the navbar-->
               <img src="{{ url('/') }}/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
               <!-- hidden-xs hides the username on small devices so only the image appears. -->
-              <span class="hidden-xs">Irvan Santoso</span>
+              <span class="hidden-xs">{{ Auth::user()->nama }}</span>
             </a>
             <ul class="dropdown-menu">
               <!-- The user image in the menu -->
@@ -126,7 +126,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <img src="{{ url('/') }}/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                 <p>
-                  Irvan Santoso - Web Developer
+                  {{ Auth::user()->nama }} - Web Developer
                   <small>Member since Nov. 2012</small>
                 </p>
               </li>
@@ -151,7 +151,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <a href="#" class="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div class="pull-right">
-                  <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                  <a href="{{ route('logout') }}" class="btn btn-default btn-flat">Sign out</a>
                 </div>
               </li>
             </ul>
@@ -172,7 +172,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <img src="{{ url('/') }}/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p>Irvan Santoso</p>
+          <p>{{ Auth::user()->nama }}</p>
           <!-- Status -->
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
@@ -193,10 +193,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu">
         <li class="header">HEADER</li>
-        <li><a href="{{url('/admin/perpanjangan')}}"><i class="fa fa-link"></i> <span>Perpanjangan terbaru (2)</span></a></li>
+        <li><a href="{{url('/admin/perpanjangan')}}"><i class="fa fa-link"></i> <span>Perpanjangan terbaru <span class="label label-warning"> ({{$perpanjangbaru}})</span></span></a></li>
           <li class="header">Mahasiswa</li>
-          <li><a href="{{ url('/admin/users') }}">Daftar Mahasiswa</a></li>
-            <li><a href="{{ url('/admin/users/create') }}">Tambah Mahasiswa Baru</a></li>
+          <li>
+            <a href="{{ url('/admin/users') }}">
+              <i class="fa fa-link"></i>
+              <span>Daftar Mahasiswa</span>
+            </a>
+          </li>
+            <li><a href="{{ url('/admin/users/create') }}"><i class="fa fa-link"></i><span>Tambah Mahasiswa Baru</span></a></li>
       </ul>
       <!-- /.sidebar-menu -->
     </section>

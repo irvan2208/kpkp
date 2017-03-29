@@ -17,7 +17,11 @@ class RedirectIfAuthenticated
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if (Auth::guard($guard)->check()) {
+        //dd(Auth::guard($guard));
+
+        if ( Auth::check() && Auth::user()->isAdmin() ){
+            return redirect('/admin/perpanjangan');
+        }else if (Auth::guard($guard)->check()) {
             return redirect('/home');
         }
 
