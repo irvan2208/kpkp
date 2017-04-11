@@ -9,6 +9,13 @@
 @section('content')
 
 <section class="content">
+@if($cek == 0)
+  <div class="callout callout-warning">
+    <h4>Kendaraan tidak ditemukan</h4>
+
+    <p>Anda belum mendaftarkan kendaraan anda, silahkan klik disini untuk mendaftar.</p>
+  </div>
+@else
       <div class="box box-primary">
             <!-- /.box-header -->
             <!-- form start -->
@@ -89,5 +96,6 @@
             {{ csrf_field() }}
             {{ Form::close() }}
           </div>
+          @endif
 </section>
 @endsection

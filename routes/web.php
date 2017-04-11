@@ -38,6 +38,7 @@ Route::post('pembayaran/baru','TransactionController@tambah')->middleware('auth'
 
 Route::get('pembayaran/konfirmasi','TransactionController@showlist')->middleware('auth');
 Route::get('pembayaran/{id}/konfirmasi','TransactionController@createconf')->middleware('auth');
+Route::post('pembayaran/{id}/konfirmasi','TransactionController@storeconf')->middleware('auth');
 
 Auth::routes();
 

@@ -33,7 +33,7 @@ class TransactionController extends Controller
             ->orWhere(function ($getduser)
             {
                 $getduser->Where('transaction.paid', 1)
-                    ->where('admincfm.cfm', 1);
+                        ->where('admincfm.cfm', 1);
             })
             ->orderBy('transaction.expired_at','desc')
             ->groupBy('nopol');
@@ -48,11 +48,17 @@ class TransactionController extends Controller
         // elseif ($getkendaraan->count() == 0) {
         //     $kosong = 1;
         // }
+            $cek = 1;
+        if(sys::where('npm', '=', $loguser->npm)->count() == 0){
+            $cek = 0;
+        }
+        //dd($cek);
 
         return view('pembayaran',[
             'loguser'=>$loguser,
             'getduser'=>$getduser->first(),
             'getkendaraan'=>$getkendaraan,
+            'cek'=>$cek,
             //'kosong'=>$kosong,
         ]);
     }
@@ -173,5 +179,10 @@ class TransactionController extends Controller
 
         return back()
             ->with('success','Konfirmasi diterima, Selesai.');
+    }
+
+    public function cekterlambat()
+    {
+        # code...
     }
 }

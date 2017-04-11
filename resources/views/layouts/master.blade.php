@@ -198,7 +198,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <ul class="sidebar-menu">
         <li class="header">HEADER</li>
         <!-- Optionally, you can add icons to the links -->
-        <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Link</span></a></li>
+        <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Daftar Kendaraan Baru</span></a></li>
         <li class="header">Member Parkir</li>
         <li><a href="{{url('/pembayaran/baru')}}">Perpanjang Member</a></li>
         <li><a href="{{url('/pembayaran/konfirmasi')}}">Konfirmasi Pembayaran</a></li>
