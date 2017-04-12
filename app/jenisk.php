@@ -8,6 +8,7 @@ use Eloquent;
 class jenisk extends Model
 {
 	protected $table = 'jenis_kendaraan';
+	protected $primaryKey = 'no_polis';
 
 	public function sys()
 	{

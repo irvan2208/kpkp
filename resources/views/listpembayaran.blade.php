@@ -25,6 +25,7 @@
             <th>No Polis</th>
             <th>Bulan</th>
             <th>Jumlah</th>
+            <th>Tgl Perpanjangan</th>
             <th>Jatuh Tempo</th>
             <th>Status</th>
           </tr>
@@ -36,6 +37,7 @@
             <td>{{ $getpemb->no_polis }} ({{ $getpemb->njenis }})</td>
             <td>{{ $getpemb->bulan }}</td>
             <td>Rp. {{ number_format($getpemb->total) }}</td>
+            <td>{{ date('d-m-Y H:i:s',strtotime(str_replace('-','/', $getpemb->tgltrans))) }}</td>
             <td>{{ date('d-m-Y',strtotime(str_replace('-','/', $getpemb->expired_at))) }}</td>
             <td>
             @if($getpemb->paid == 0)
@@ -55,6 +57,7 @@
             <th>No Polis</th>
             <th>Bulan</th>
             <th>Jumlah</th>
+            <th>Tgl perpanjangan</th>
             <th>Jatuh Tempo</th>
             <th>Status</th>
           </tr>

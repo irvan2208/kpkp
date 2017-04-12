@@ -97,7 +97,7 @@ class TransactionController extends Controller
     {
         $loguser = Auth::user();
         $getall = DB::table('transaction')
-        ->select(['admincfm.*','transaction.*','sys.*','jenis_kendaraan.nama as njenis',DB::raw('transaction.bulan*jenis_kendaraan.harga AS total')])
+        ->select(['admincfm.*','transaction.*','sys.*','transaction.created_at as tgltrans','jenis_kendaraan.nama as njenis',DB::raw('transaction.bulan*jenis_kendaraan.harga AS total')])
         ->leftJoin('sys','transaction.no_polis','=','sys.no_polis')
         ->leftJoin('jenis_kendaraan','sys.jenis','=','jenis_kendaraan.id')
         ->leftJoin('admincfm','transaction.id','=','admincfm.transid')
@@ -135,7 +135,7 @@ class TransactionController extends Controller
         $this->validate($request, [
             'namatrans' => 'required',
             'bank' => 'required|numeric',
-            'bukti' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'bukti' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5000',
         ]);
 
         $imageName = time().'.'.$request->bukti->getClientOriginalExtension();

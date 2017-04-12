@@ -33,6 +33,9 @@ Route::put('admin/perpanjangan/{id}/konfirmasi','TransactionController@confpaid'
 
 
 
+Route::get('kendaraan','kendaraan@showkendaraan')->name('kendaraan')->middleware('auth');
+Route::post('kendaraan/tambah','kendaraan@storetambah')->middleware('auth');
+Route::delete('kendaraan/{nopol}/del','kendaraan@hapus')->middleware('auth');
 Route::get('pembayaran/baru','TransactionController@show')->middleware('auth');
 Route::post('pembayaran/baru','TransactionController@tambah')->middleware('auth');
 
