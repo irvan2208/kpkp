@@ -52,6 +52,24 @@
                       <span class="text-red">
                         @if(empty($getkendaraan->cfm))
                           Sudah Habis
+                          <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                            <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                  <h4 class="modal-title" id="myModalLabel">Perpanjang bulan ini atau bulan depan?</h4>
+                                </div>
+                                <div class="modal-body">
+                                Nampaknya anda telat membayar, silahkan pilih
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                  {{Form::submit('Bayar Bulan ini',array('class'=>'btn btn-primary btn-clr'))}}
+                                  {{Form::submit('Bayar bulan depan',array('class'=>'btn btn-primary btn-clr'))}}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                         @elseif($getkendaraan->days > 0)
                           {{$getkendaraan->days}} Hari Lagi
                         @endif
@@ -88,7 +106,10 @@
             		</tr>
             		<tr>
             		<th colspan="2">
-                        {{Form::submit('Simpan',array('class'=>'btn btn-block btn-primary btn-clr'))}}</th>
+                  {{Form::submit('Simpan',array('class'=>'btn btn-block btn-primary btn-clr'))}}
+                  <button data-toggle="modal" data-target="#myModal">asd</button>
+                  <!-- data-toggle="modal" data-target="#myModal" -->
+                  </th>
             		</tr>
 	            </tbody>
             </table>

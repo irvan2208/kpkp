@@ -181,6 +181,14 @@ class TransactionController extends Controller
             ->with('success','Konfirmasi diterima, Selesai.');
     }
 
+    public function delconf(Request $request, $id)
+    {
+        //dd($request);
+        $transhps = DB::table('transaction')->where('id',$id)->where('no_polis',$request->nopol);
+        $transhps->delete();
+        return back();
+    }
+
     public function cekterlambat()
     {
         # code...

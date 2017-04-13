@@ -42,6 +42,12 @@
             <td>
             @if($getpemb->paid == 0)
             {{ link_to('pembayaran/'.$getpemb->id.'/konfirmasi', 'Konfirmasi', array('class' => 'btn btn-sm btn-success')) }}
+            {{ Form::open(array('url' => 'pembayaran/'.$getpemb->id.'/konfirmasi/hapus')) }}
+                {{ method_field('DELETE') }}
+                {{ Form::hidden('nopol', $getpemb->no_polis) }}
+                  {{Form::submit('Hapus',array('class'=>'btn btn-sm btn-danger'))}}
+                {{ csrf_field() }}
+            {{ Form::close() }}
             @elseif($getpemb->cfm == 0)
               Menunggu Konfirmasi admin
             @elseif($getpemb->cfm == 1)

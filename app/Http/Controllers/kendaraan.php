@@ -41,7 +41,8 @@ class kendaraan extends Controller
 
     public function hapus(Request $request, $nopol)
     {
-    	$kendaraanhps = DB::table('sys')->where('no_polis',$nopol);
+        $loguser = Auth::user();
+    	$kendaraanhps = DB::table('sys')->where('no_polis',$nopol)->where('npm',$loguser->npm);
     	//dd($kendaraanhps);
     	$kendaraanhps->delete();
     	return back();
