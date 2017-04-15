@@ -19,7 +19,9 @@
       <div class="box box-primary">
             <!-- /.box-header -->
             <!-- form start -->
+            @if($getkendaraan->days > 0)
             {{ Form::open(array('url' => 'pembayaran/baru')) }}
+            @endif
             <div class="box-body">
             <table class="table">
 	            <tbody>
@@ -49,9 +51,10 @@
                     @if (count($getkendaraan) == 1)
                       {{ $getkendaraan->nopol }} ({{ $getkendaraan->njenis }}) 
                       <input type="hidden" name="nopol" value="{{ $getkendaraan->nopol }}">
-                      <span class="text-red">
-                        @if(empty($getkendaraan->cfm))
+                        @if($getkendaraan->days < 0)
+                          <span class="text-red">
                           Sudah Habis
+                          </span>
                           <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                             <div class="modal-dialog" role="document">
                               <div class="modal-content">
@@ -64,8 +67,22 @@
                                 </div>
                                 <div class="modal-footer">
                                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                  {{Form::submit('Bayar Bulan ini',array('class'=>'btn btn-primary btn-clr'))}}
-                                  {{Form::submit('Bayar bulan depan',array('class'=>'btn btn-primary btn-clr'))}}
+                                  {{ Form::open(array('url' => 'pembayaran/baru')) }}
+                                    <input type="hidden" name="nopol" value="{{ $getkendaraan->nopol }}">
+                                    <input type="hidden" name="telat" value="yes">
+                                    {{ Form::hidden('bulan', 1, array('class' => 'form-control bulan1','min'=>1, 'max' => 12)) }}
+                                    {{Form::submit('Bayar bulan ini',array('class'=>'btn btn-primary btn-clr'))}}
+                                  {{ csrf_field() }}
+                                  {{ Form::close() }}
+
+
+                                  {{ Form::open(array('url' => 'pembayaran/baru')) }}
+                                    <input type="hidden" name="nopol" value="{{ $getkendaraan->nopol }}">
+                                    <input type="hidden" name="telat" value="no">
+                                    {{ Form::hidden('bulan', 1, array('class' => 'form-control bulan1','min'=>1, 'max' => 12)) }}
+                                    {{Form::submit('Bayar bulan depan',array('class'=>'btn btn-primary btn-clr'))}}
+                                  {{ csrf_field() }}
+                                  {{ Form::close() }}
                                 </div>
                               </div>
                             </div>
@@ -73,7 +90,6 @@
                         @elseif($getkendaraan->days > 0)
                           {{$getkendaraan->days}} Hari Lagi
                         @endif
-                      </span> 
                       @else
                         <select name="nopol" class="form-control">
                         @foreach ($getkendaraan as $kend)
@@ -97,26 +113,43 @@
             		<tr>
             			<th>Pilih Jumlah Bulan</th>
             			<td class="{{ $errors->has('bulan') ? 'has-error' :'' }}">
-                              {{ Form::number('bulan', 1, array('class' => 'form-control','min'=>1, 'max' => 12)) }}
+                      {{ Form::number('bulan', 1, array('class' => 'form-control bulan','min'=>1, 'max' => 12)) }}
 
-                              @if($errors->has('bulan'))
-                                    <span class="help-block">{{$errors->first('bulan')}}</span>
-                              @endif
+                      @if($errors->has('bulan'))
+                            <span class="help-block">{{$errors->first('bulan')}}</span>
+                      @endif
             			</td>
             		</tr>
             		<tr>
             		<th colspan="2">
+                @if($getkendaraan->days < 0)
+                  <button class="btn btn-block btn-primary btn-clr" data-toggle="modal" data-target="#myModal">Simpan</button>
+                @else
                   {{Form::submit('Simpan',array('class'=>'btn btn-block btn-primary btn-clr'))}}
-                  <button data-toggle="modal" data-target="#myModal">asd</button>
+                @endif
                   <!-- data-toggle="modal" data-target="#myModal" -->
                   </th>
             		</tr>
 	            </tbody>
             </table>
             </div>
+            @if($getkendaraan->days > 0)
             {{ csrf_field() }}
             {{ Form::close() }}
+            @endif
           </div>
           @endif
 </section>
+
+@endsection
+@section('customjs')
+<script type="text/javascript">
+  $('.bulan').bind('keyup mouseup', function () {
+      $('.bulan1').val($('.bulan').val())
+  });
+
+  $("[type='number']").keypress(function (evt) {
+          evt.preventDefault();
+  });
+</script>
 @endsection

@@ -52,7 +52,7 @@ class TransactionController extends Controller
         if(sys::where('npm', '=', $loguser->npm)->count() == 0){
             $cek = 0;
         }
-        //dd($cek);
+        //dd($getkendaraan->days);
 
         return view('pembayaran',[
             'loguser'=>$loguser,
@@ -72,7 +72,11 @@ class TransactionController extends Controller
         // ]);
 
         $date = date("Y-m-d");
-        $bulan = $request->bulan+1;
+        if ($request->telat = 'yes') {
+            $bulan = $request->bulan;
+        }elseif ($request->telat = 'no') {
+            $bulan = $request->bulan+1;
+        }
         $date = strtotime(date("Y-m-1", strtotime($date)) . " +$bulan month");
         $date = date("Y-m-d",$date);
         //echo 'expired: '.$date;
