@@ -7,17 +7,23 @@ use Illuminate\Support\Facades\DB;
 use Auth;
 use App\jenisk;
 use App\sys;
+use App\users;
 
 class kendaraan extends Controller
 {
     public function showkendaraan()
     {
     	$loguser = Auth::user();
-    	$getkendaraan = DB::table('sys')->where('npm',$loguser->npm)->get();
+    	$getkendaraan = DB::table('sys')->select(['sys.*','jenis_kendaraan.nama as njenis'])->leftJoin('jenis_kendaraan','jenis_kendaraan.id','=','sys.jenis')->where('npm',$loguser->npm)->get();
     	$getjnskendaraan = DB::table('jenis_kendaraan')->pluck('nama', 'id');
-    	//dd($getkendaraan);
 
-    	return view('daftarkendaraan',['getkendaraan'=>$getkendaraan,'getjnskendaraan'=>$getjnskendaraan]);
+        $getuser = DB::table('users')->select(['users.*','prodi.*','prodi.nama as pnama','users.created_at as tgldaftar'])->where('npm',$loguser->npm)->leftJoin('prodi','prodi.id','=','users.prodi')->first();
+        //dd($getuser);
+
+        $ckend = DB::table('sys')->where('npm',$loguser->npm)->count();
+        //dd($ckend);
+
+    	return view('daftarkendaraan',['getkendaraan'=>$getkendaraan,'getjnskendaraan'=>$getjnskendaraan,'getuser'=>$getuser,'ckend'=>$ckend]);
     }
 
     public function storetambah(Request $request)

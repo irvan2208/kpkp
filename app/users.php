@@ -16,5 +16,8 @@ class users extends Model
 
     //protected $fillable = ['title','description']; //whitelist
     // protected $guarded = ['title','description']; //blacklist
-
+	 public function prodi()
+    {
+        return $this->belongsTo('App\prodi');
+    }
 }

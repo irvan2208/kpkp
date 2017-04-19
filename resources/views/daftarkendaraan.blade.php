@@ -1,14 +1,56 @@
 @extends('layouts.master')
 @section('title','Kendaraan')
-@section('page-header','Tambah Kendaraan')
+@section('page-header','Profil & Kendaraan')
 @section('page-description','Silahkan isi form berikut')
 @section('breadcrumblv2')
-<li class="active">Daftar Kendaraan</li>
+<li class="active">Profil & Kendaraan</li>
 @endsection
 
 @section('content')
 
 <section class="content">
+<div class="col-md-4">
+	<div class="box box-primary">
+        <div class="box-body box-profile">
+          <img class="profile-user-img img-responsive img-circle" src="{{ url('/') }}/dist/img/user2-160x160.jpg" alt="User profile picture">
+
+          <h3 class="profile-username text-center">{{ $getuser->nama }}</h3>
+
+          <p class="text-muted text-center">{{ $getuser->pnama }}</p>
+
+          <ul class="list-group list-group-unbordered">
+            <li class="list-group-item">
+              <b>Jenis Kelamin</b> <a class="pull-right">
+              @if(!empty($getuser->jk))
+              	{{ $getuser->jk === "m" ? "Pria" : "Wanita" }}
+              @else
+              	No Data
+              @endif
+              </a>
+            </li>
+            <li class="list-group-item">
+              <b>Email</b> <a class="pull-right">{{$getuser->email}}</a>
+            </li>
+            <li class="list-group-item">
+              <b>Telephone</b> <a class="pull-right">
+              @if(!empty($getuser->jk))
+              {{$getuser->phone}}
+              @else
+              No Data
+              @endif</a>
+            </li>
+            <li class="list-group-item">
+              <b>Mendaftar pada</b> <a class="pull-right">
+              {{ date('d-m-Y',strtotime(str_replace('-','/', $getuser->tgldaftar))) }}</a>
+            </li>
+          </ul>
+
+          <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
+        </div>
+        <!-- /.box-body -->
+      </div>
+</div>
+<div class="col-md-8">
 	<div class="box box-primary">
 	@if (count($errors) > 0)
         <div class="alert alert-danger">
@@ -23,11 +65,11 @@
 		<div class="box-header with-border">
 	      <div class="row">
 	        <h3 class="box-title col-xs-6">Daftar Kendaraan </h3>
-	        <div class="col-xs-6 right" style="text-align: right;"><button data-toggle="modal" data-target="#myModal" class="btn btn-sm btn-danger">Tambah Kendaraan Baru</button></div>
 	      </div>
 	    </div>
+	    @if(count($getkendaraan) >= 1)
 		<div class="box-body">
-			<table id="pembayaran" class="table table-bordered table-striped">
+			<table id="tblpembayaran" class="table table-bordered table-striped">
 		        <thead>
 		          <tr>
 		            <th>No Polis</th>
@@ -39,8 +81,8 @@
 		        	@foreach($getkendaraan as $listkendaraan)
 		        		<tr>
 		        			<td>{{$listkendaraan->no_polis}}</td>
-		        			<td>{{$listkendaraan->jenis}}</td>
-		        			{{ Form::open(array('url' => 'kendaraan/'.$listkendaraan->no_polis.'/del')) }}
+		        			<td>{{$listkendaraan->njenis}}</td>
+		        			{{ Form::open(array('url' => 'kendaraan/'.$listkendaraan->no_polis.'/del','id'=>'delform')) }}
 			        			{{ method_field('DELETE') }}
 			        				<td>{{Form::submit('Hapus',array('class'=>'btn btn-primary btn-warning'))}}</td>
 			        			{{ csrf_field() }}
@@ -57,7 +99,15 @@
 		        </thead>
 		        </table>
 		</div>		
+		@endif
+    @if($ckend == 0)
+	<div class="box-footer">
+	    <button data-toggle="modal" data-target="#myModal" class="btn btn-sm btn-danger">Tambah Kendaraan Baru</button>
+	  </div>
+    @endif
 	</div>
+
+</div>
 </section>
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -89,4 +139,23 @@
     </div>
   </div>
 </div>
+@endsection
+
+
+@section('customjs')
+<script type="text/javascript">
+	$('#tblpembayaran').DataTable({
+      "paging": false,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": false,
+      "info": false
+    });
+</script>
+
+<script type="text/javascript">
+	$('#delform').on("submit", function(){
+        return confirm("Yakin akan menghapus kendaraan ini??");
+    });
+</script>
 @endsection

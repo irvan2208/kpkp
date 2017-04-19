@@ -19,21 +19,26 @@ class TransactionController extends Controller
     public function show()
     {
         $loguser = Auth::user();
-
+        //$getd = DB::table('sys')
         //DB::enableQueryLog();
 
         $getduser = DB::table('sys')
-            ->select(['prodi.*','transaction.*','admincfm.cfm as cfm','sys.*','users.*','prodi.nama as np','jenis_kendaraan.nama as njenis','sys.no_polis as nopol',DB::raw("datediff(MAX(transaction.expired_at), NOW())as days")])
+            ->select(['prodi.*','transaction.*','admincfm.cfm as cfm','sys.*','users.*','prodi.nama as np','jenis_kendaraan.nama as njenis','sys.no_polis as nopol',DB::raw("IFNULL(datediff(MAX(transaction.expired_at), NOW()),0)as days")])
             ->leftJoin('users','users.npm','=','sys.npm')
             ->leftJoin('jenis_kendaraan','jenis_kendaraan.id','=','sys.jenis')
             ->leftJoin('prodi','prodi.id','=','users.prodi')
             ->leftJoin('transaction','transaction.no_polis','=','sys.no_polis')
             ->leftJoin('admincfm','admincfm.transid','=','transaction.id')
             ->where('users.npm', $loguser->npm)
-            ->orWhere(function ($getduser)
+            ->where(function ($getduser)
             {
-                $getduser->Where('transaction.paid', 1)
-                        ->where('admincfm.cfm', 1);
+                $getduser->where(function ($a) {
+                    $a->where('transaction.paid', 1)
+                    ->where('admincfm.cfm', 1);
+                })
+                ->orWhere(function ($a) {
+                    $a->whereNull('transaction.id');
+                });
             })
             ->orderBy('transaction.expired_at','desc')
             ->groupBy('nopol');
@@ -52,7 +57,7 @@ class TransactionController extends Controller
         if(sys::where('npm', '=', $loguser->npm)->count() == 0){
             $cek = 0;
         }
-        //dd($getkendaraan->days);
+        //dd($getkendaraan); //ini ngambil hasil dari query atas
 
         return view('pembayaran',[
             'loguser'=>$loguser,
@@ -72,11 +77,11 @@ class TransactionController extends Controller
         // ]);
 
         $date = date("Y-m-d");
-        if ($request->telat = 'yes') {
+        $bulan = $request->bulan+1;
+        if ($request->submitbutton == "Bayar Bulan Ini") {
             $bulan = $request->bulan;
-        }elseif ($request->telat = 'no') {
-            $bulan = $request->bulan+1;
         }
+        //dd($request->submitbutton." ".$bulan);
         $date = strtotime(date("Y-m-1", strtotime($date)) . " +$bulan month");
         $date = date("Y-m-d",$date);
         //echo 'expired: '.$date;
