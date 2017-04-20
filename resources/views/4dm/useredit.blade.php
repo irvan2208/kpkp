@@ -3,7 +3,7 @@
 @section('page-header','Edit User')
 @section('page-description','Silahkan isi form berikut')
 @section('breadcrumblv2')
-<li class="active">Tambah User</li>
+<li class="active">Edit User</li>
 @endsection
 
 @section('content')
@@ -45,13 +45,28 @@
             			</div>
             		</div>
             	</div>
-                  <div class="form-group {{ $errors->has('email') ? 'has-error' :'' }}">
-                        {{Form::label('email', 'Email Address')}}
-                        {{ Form::email('email', $users->email, ['class' => 'form-control']) }}
-                        @if($errors->has('email'))
-                              <span class="help-block">{{$errors->first('email')}}</span>
-                        @endif
+                  <div class="row">
+                        <div class="col-md-6">
+                              <div class="form-group {{ $errors->has('email') ? 'has-error' :'' }}">
+                                    {{Form::label('email', 'Email Address')}}
+                                    {{ Form::email('email', $users->email, ['class' => 'form-control']) }}
+                                    @if($errors->has('email'))
+                                          <span class="help-block">{{$errors->first('email')}}</span>
+                                    @endif
+                              </div>
+                        </div>
+
+                        <div class="col-md-6">
+                              <div class="form-group {{ $errors->has('phone') ? 'has-error' :'' }}">
+                                    {{Form::label('pr', 'No Hp')}}<br>
+                                    {{ Form::text('phone', $users->phone, ['class' => 'form-control','placeholder'=>'No Hp Mahasiswa']) }}
+                                    @if($errors->has('phone'))
+                                          <span class="help-block">{{$errors->first('phone')}}</span>
+                                    @endif
+                              </div>
+                        </div>
                   </div>
+
             	<div class="form-group">
             		{{Form::submit('Simpan',array('class'=>'btn btn-block btn-primary'))}}
             	</div>

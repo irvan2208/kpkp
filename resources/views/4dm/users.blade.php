@@ -37,12 +37,13 @@
                   </div>
             	<div class="row">
             		<div class="col-md-6">
-                              <div class="form-group {{ $errors->has('nama') ? 'has-error' :'' }}">
+                              <div class="form-group has-feedback {{ $errors->has('nama') ? 'has-error' :'' }}">
                                     {{Form::label('nama', 'Nama Mahasiswa')}}
                                     {{ Form::text('nama', '', array('class' => 'form-control', 'placeholder' => 'Nama Mahasiswa')) }}
                                     @if($errors->has('nama'))
                                           <span class="help-block">{{$errors->first('nama')}}</span>
                                     @endif
+                                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
                               </div>
                         </div>
                         <div class="col-md-6">
@@ -54,21 +55,40 @@
             	</div>
                   <div class="row">
                         <div class="col-md-6">
-                              <div class="form-group {{ $errors->has('email') ? 'has-error' :'' }}">
+                              <div class="form-group has-feedback {{ $errors->has('email') ? 'has-error' :'' }}">
                                     {{Form::label('email', 'Email Address')}}
                                     {{ Form::email('email', '', ['class' => 'form-control','placeholder' => 'Email Mahasiswa']) }}
                                     @if($errors->has('email'))
                                           <span class="help-block">{{$errors->first('email')}}</span>
                                     @endif
+                                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                               </div>
                         </div>
                         <div class="col-md-6">
-                              <div class="form-group {{ $errors->has('phone') ? 'has-error' :'' }}">
-                                    {{Form::label('phone', 'Nomor Pokok Mahasiswa')}}
+                              <div class="form-group has-feedback {{ $errors->has('phone') ? 'has-error' :'' }}">
+                                    {{Form::label('phone', 'Nomor Hp Mahasiswa')}}
                                     {{ Form::text('phone', '', array('class' => 'form-control', 'placeholder' => 'No Hp Mahasiswa')) }}
                                     @if($errors->has('phone'))
                                           <span class="help-block">{{$errors->first('phone')}}</span>
                                     @endif
+                                    <span class="glyphicon glyphicon-phone form-control-feedback"></span>
+                              </div>
+                        </div>
+                  </div>
+                  <div class="row">
+                        <div class="col-md-6">
+                              {{Form::label('email', 'Password')}}
+                              <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }} has-feedback">
+                                    {{ Form::password('password', array('class' => 'password form-control','readonly'=>'readonly','placeholder'=>'Password')) }}
+
+                                      @if ($errors->has('password'))
+                                          <span class="help-block">
+                                              <strong>{{ $errors->first('password') }}</strong>
+                                          </span>
+                                      @endif
+
+                                      <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                              {{ Form::checkbox('pstandart','standart',true, array('id'=>'checkpwd'))}} Gunakan Password Standar (user123)
                               </div>
                         </div>
                   </div>
@@ -96,6 +116,22 @@
 <script type="text/javascript">
       $('.btn-clr').click(function( event ) {
         $("[data-mask]").val().replace(new RegExp('-', 'g'),"");
+      });
+</script>
+
+
+<script type="text/javascript">
+      $("[type=password]").val('user123');
+</script>
+<script type="text/javascript">
+      $("#checkpwd").change(function() {
+            $("[type=password]").val('user123');
+            $("[type=password]").prop("readonly", true);
+            var ischecked= $(this).is(':checked');
+            if(!ischecked){
+                  $("[type=password]").val('');
+                  $("[type=password]").prop("readonly", false);
+            }
       });
 </script>
 @endsection

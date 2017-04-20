@@ -52,5 +52,29 @@
         });
       });
     </script>
+    <!-- InputMask -->
+  <script src="{{ url('/') }}/plugins/input-mask/jquery.inputmask.js"></script>
+  <script src="{{ url('/') }}/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+  <script src="{{ url('/') }}/plugins/input-mask/jquery.inputmask.extensions.js"></script>
+    <script type="text/javascript">
+      $("[data-mask]").inputmask();
+    </script>
+    <script type="text/javascript">
+          $(document.body).on("change",".select2",function(){
+           //$('#npm').val(this.value);
+           $("[data-mask]").val('00'+this.value).inputmask().toString();
+           $("[data-mask]").val().replace(new RegExp('-', 'g'),"");
+          });
+    </script>
+    <script type="text/javascript">
+          $('.btn-clr').click(function( event ) {
+            $("[data-mask]").val().replace(new RegExp('-', 'g'),"");
+          });
+    </script>
+    <script type="text/javascript">
+       $('#npm').on('input',function(e){
+         $('#npmhide').val($('#npm').val().replace(/-/g, ""));
+        });
+    </script>
 </body>
 </html>

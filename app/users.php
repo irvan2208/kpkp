@@ -14,7 +14,7 @@ class users extends Model
 	protected $table = 'users';
     //public $timestamps = false; // kolom created_at updated_add tidak ada
 
-    //protected $fillable = ['title','description']; //whitelist
+    //protected $fillable = ['*']; //whitelist
     // protected $guarded = ['title','description']; //blacklist
 	 public function prodi()
     {

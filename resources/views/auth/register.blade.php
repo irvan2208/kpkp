@@ -11,7 +11,9 @@
             {{ csrf_field() }}
 
             <div class="form-group{{ $errors->has('npm') ? ' has-error' : '' }} has-feedback">
-                    <input placeholder="Nomor Pokok Mahasiswa"  id="npm" type="text" class="form-control" name="npm" value="{{ old('npm') }}"  required autofocus>
+                    <input placeholder="Nomor Pokok Mahasiswa"  id="npm" type="text" class="form-control" data-inputmask="'mask': ['99-99-999']" data-mask="data-mask" value="{{ old('npm') }}"  required autofocus>
+                    <input placeholder="Nomor Pokok Mahasiswa"  id="npmhide" type="hidden" class="form-control" name="npm" value="{{ old('npm') }}"  required autofocus>
+
 
                     @if ($errors->has('npm'))
                         <span class="help-block">

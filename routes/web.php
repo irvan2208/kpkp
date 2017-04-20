@@ -28,8 +28,11 @@ Route::get('admin/perpanjangan', 'TransactionController@perpanjanganlist')->midd
 Route::get('admin/users','UserController@showuser')->middleware('auth','admin','admin');
 Route::get('admin/users/{npm}/edit','UserController@edit')->middleware('auth','admin');
 Route::put('admin/users/{npm}','UserController@update')->middleware('auth','admin');
+Route::get('admin/kendaraan','kendaraan@showadmin')->name('admin/kendaraan')->middleware('auth','admin');
 Route::post('admin/users','UserController@store')->middleware('auth','admin');
 Route::put('admin/perpanjangan/{id}/konfirmasi','TransactionController@confpaid')->middleware('auth','admin');
+Route::post('admin/kendaraan/tambah','kendaraan@admstoretambah')->middleware('auth');
+Route::delete('admin/kendaraan/{nopol}/del','kendaraan@admhapus')->middleware('auth','admin');
 
 
 
@@ -43,6 +46,7 @@ Route::get('pembayaran/konfirmasi','TransactionController@showlist')->middleware
 Route::get('pembayaran/{id}/konfirmasi','TransactionController@createconf')->middleware('auth');
 Route::delete('pembayaran/{id}/konfirmasi/hapus','TransactionController@delconf')->middleware('auth');
 Route::post('pembayaran/{id}/konfirmasi','TransactionController@storeconf')->middleware('auth');
+Route::put('users/{npm}','UserController@updateuser')->middleware('auth');
 
 Auth::routes();
 

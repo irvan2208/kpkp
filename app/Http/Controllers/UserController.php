@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Requests;
 use App\prodi;
 use App\users;
+use Auth;
 
 class UserController extends Controller
 {
@@ -21,21 +22,25 @@ class UserController extends Controller
     {
         //dd($request);
         $this->validate($request,[
-            'npm' => 'unique:users|required|numeric',
+            'npm' => 'unique:users|required',
             'nama' => 'required',
             'jk' => 'required',
             'prodi' => 'required',
-            'email' => 'required',
-            'phone' => 'required|numeric'
+            'email' => 'unique:users|required',
+            'phone' => 'required|numeric',
+            'password' => 'required|min:6'
         ]);
 
+        $pass = bcrypt($request->password);
+        $npmfinal = str_replace('-', '', $request->npm);
         $users = new users;
-        $users->npm = $request->npm;
+        $users->npm = $npmfinal;
         $users->nama = $request->nama;
         $users->jk = $request->jk;
         $users->prodi = $request->prodi;
         $users->email = $request->email;
         $users->phone = $request->phone;
+        $users->password = $pass;
         $users->save();
 
         return redirect('admin/users');
@@ -71,7 +76,8 @@ class UserController extends Controller
             'nama' => 'required',
             'jk' => 'required',
             'prodi' => 'required',
-            'email' => 'required'
+            'email' => 'required',
+            'phone' => 'required|numeric'
         ]);
 
         $users = users::find($npm);
@@ -81,8 +87,36 @@ class UserController extends Controller
         $users->jk = $request->jk;
         $users->prodi = $request->prodi;
         $users->email = $request->email;
+        $users->phone = $request->phone;
         $users->save();
 
         return redirect('admin/users/'.$npm.'/edit');
+    }
+
+    public function updateuser(Request $request)
+    {
+        $loguser = Auth::user();
+
+        //dd($loguser->npm);
+        $this->validate($request,[
+            //'npm' => 'unique:users|required',
+            'nama' => 'required',
+            'jk' => 'required',
+            'prodi' => 'required',
+            'email' => 'required',
+            'phone' => 'required|numeric'
+        ]);
+
+        $users = users::find($loguser->npm);
+        //dd($users);
+        //$users->npm = $request->npm;
+        $users->nama = $request->nama;
+        $users->jk = $request->jk;
+        $users->prodi = $request->prodi;
+        $users->email = $request->email;
+        $users->phone = $request->phone;
+        $users->save();
+
+        return redirect('kendaraan');
     }
 }
