@@ -76,7 +76,10 @@ class TransactionController extends Controller
         //     'bulan' => 'required|max:12|min:0|numeric'
         // ]);
 
+        //if apa
         $date = date("Y-m-d");
+
+
         $bulan = $request->bulan+1;
         if ($request->submitbutton == "Bayar Bulan Ini") {
             $bulan = $request->bulan;
