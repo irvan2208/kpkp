@@ -75,19 +75,41 @@ class TransactionController extends Controller
         //     'nopolis' => 'required',
         //     'bulan' => 'required|max:12|min:0|numeric'
         // ]);
+        $getlatest = DB::table('transaction')
+            ->select('expired_at')
+            ->join('admincfm','transaction.id','=','admincfm.transid')
+            ->where('transaction.no_polis', $request->nopol)
+            ->where(function ($getlatest)
+            {
+                $getlatest->where(function ($a) {
+                    $a->where('transaction.paid', 1)
+                    ->where('admincfm.cfm', 1);
+                })
+                ->orWhere(function ($a) {
+                    $a->whereNull('transaction.id');
+                });
+            })
+            ->orderBy('transaction.expired_at','desc')
+            ->first();
 
-        //if apa
-        $date = date("Y-m-d");
+            $bulan = $request->bulan+1;
+            if ($request->submitbutton == "Bayar Bulan Ini") {
+                $bulan = $request->bulan;
+            }
+            if ($getlatest == null or (date("Y-m-d") > date($getlatest->expired_at))) {
+                $date1 = date("Y-m-d");
+            }else if (date("Y-m-d") < date($getlatest->expired_at)){
+                $date1 = date($getlatest->expired_at);
+                $bulan = $request->bulan;
+            }
 
 
-        $bulan = $request->bulan+1;
-        if ($request->submitbutton == "Bayar Bulan Ini") {
-            $bulan = $request->bulan;
-        }
-        //dd($request->submitbutton." ".$bulan);
-        $date = strtotime(date("Y-m-1", strtotime($date)) . " +$bulan month");
+
+        //dd($bulan. $date1);
+        $date = strtotime(date("Y-m-1", strtotime($date1)) . " +$bulan month");
         $date = date("Y-m-d",$date);
-        //echo 'expired: '.$date;
+        
+
 
         //DB::enableQueryLog();
         $transaction = new transaction;
