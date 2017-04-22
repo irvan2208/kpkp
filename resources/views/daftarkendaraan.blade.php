@@ -157,13 +157,13 @@
 		        		</tr>
 		        	@endforeach
 		        </tbody>
-		        <thead>
+		        <!-- <thead>
 		          <tr>
 		            <th>No Polis</th>
 		            <th>Jenis</th>
 		            <th>Option</th>
 		          </tr>
-		        </thead>
+		        </thead> -->
 		        </table>
 		</div>		
 		@endif

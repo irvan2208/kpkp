@@ -3,7 +3,7 @@
 @section('content')
 <div class="register-box">
   <div class="register-logo">
-    <a href="../../index2.html"><b>Parkir</b>UIB</a>
+    <a href="{{ url('/') }}"><b>Parkir</b>UIB</a>
   </div>
 <div class="register-box-body">
 <p class="login-box-msg">Register a new membership</p>
