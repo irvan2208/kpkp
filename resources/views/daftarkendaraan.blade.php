@@ -12,7 +12,7 @@
 <div class="col-md-4">
 <div class="box box-primary">
   <div class="box-header with-border">
-    <h3 class="box-title">Edit</h3>
+    <h3 class="box-title">Ubah</h3>
   </div>
   <!-- /.box-header -->
   <!-- form start -->
@@ -111,7 +111,7 @@
               {{ date('d-m-Y',strtotime(str_replace('-','/', $getuser->tgldaftar))) }}</a>
             </li>
           </ul>
-          {{ link_to('kendaraan?edit=1', 'Edit', array('class' => 'btn btn-warning btn-block')) }}
+          {{ link_to('kendaraan?edit=1', 'Ubah', array('class' => 'btn btn-warning btn-block')) }}
         </div>
         <!-- /.box-body -->
       </div>
@@ -188,7 +188,7 @@
       <div class="modal-body">
       <table class="table">
 		<tr>
-			<th>Jenis Kendaraan</th>
+			<th>Nomor Kendaraan</th>
 			<td>{{ Form::text('no_polis', '', array('class' => 'form-control', 'placeholder' => 'BP1234AA')) }}</td>
 		</tr>
 		<tr>
@@ -198,7 +198,7 @@
       </table>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
         {{Form::submit('Simpan',array('class'=>'btn btn-primary btn-clr'))}}
       </div>
 	    {{ csrf_field() }}
