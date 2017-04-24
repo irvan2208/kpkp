@@ -285,6 +285,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       "searching": false,
       "ordering": true,
       "info": true,
+      "responsive": true,
       "autoWidth": false
     });
   });

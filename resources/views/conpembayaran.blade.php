@@ -64,7 +64,7 @@
                               @if($gettrans->paid == 1)
                                     {{$gettrans->atas_nama}}
                               @else
-                              {{ Form::text('namatrans', '', array('class' => 'form-control')) }}
+                              {{ Form::text('namatrans', '', array('class' => 'form-control','required'=>'required')) }}
                               @endif
                               </td>
                         </tr>
