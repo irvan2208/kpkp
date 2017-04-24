@@ -198,8 +198,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Optionally, you can add icons to the links -->
         <li class="active"><a href="{{url('/kendaraan')}}"><i class="fa fa-link"></i> <span>Profil & kendaraan</span></a></li>
         <li class="header">Member Parkir</li>
-        <li><a href="{{url('/pembayaran/baru')}}"><i class="fa fa-link"></i> Perpanjang Kendaraan</a></li>
-        <li><a href="{{url('/pembayaran/konfirmasi')}}"><i class="fa fa-link"></i> Konfirmasi Pembayaran</a></li>
+        <li><a href="{{url('/pembayaran/baru')}}"><i class="fa fa-link"></i> <span>Perpanjang Kendaraan</span></a></li>
+        <li><a href="{{url('/pembayaran/konfirmasi')}}"><i class="fa fa-link"></i> <span>Konfirmasi Pembayaran</span></a></li>
         
       </ul>
       <!-- /.sidebar-menu -->
