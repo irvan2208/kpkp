@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-})->middleware('auth');
+Route::get('/','UserController@ceklogin')->middleware('auth');
 
 Route::get('index', function () {
     return view('index');
