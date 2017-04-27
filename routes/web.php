@@ -31,6 +31,8 @@ Route::post('admin/users','UserController@store')->middleware('auth','admin');
 Route::put('admin/perpanjangan/{id}/konfirmasi','TransactionController@confpaid')->middleware('auth','admin');
 Route::post('admin/kendaraan/tambah','kendaraan@admstoretambah')->middleware('auth');
 Route::delete('admin/kendaraan/{nopol}/del','kendaraan@admhapus')->middleware('auth','admin');
+Route::get('pembayaran/laporan','laporan@pembayaran')->name('pembayaran/laporan')->middleware('auth','admin');
+Route::get('perpanjang/laporan','laporan@perpanjangan')->name('pembayaran/laporan')->middleware('auth','admin');
 
 
 
